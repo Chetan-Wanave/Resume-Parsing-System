@@ -9,6 +9,9 @@ import os
 
 app = Flask(__name__)
 
+# Routes
+from user import routes
+
 # Load spaCy NER model
 nlp = spacy.load("en_core_web_sm")
 
@@ -28,6 +31,7 @@ def extract_entities(text):
     if names:
         names = [" ".join(names[0])]
     return emails, names
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -73,7 +77,7 @@ def index():
 from flask import send_file
 
 @app.route('/download_csv')
-def download_csv():
+def download_csv(results):
     # Generate the CSV content
     csv_content = "Rank,Name,Email,Similarity\n"
     for rank, (names, emails, similarity) in enumerate(results, start=1):
@@ -91,7 +95,9 @@ def download_csv():
     csv_full_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), csv_filename)
     return send_file(csv_full_path, as_attachment=True, download_name="ranked_resumes.csv")
 
-
+@app.route('/register/')
+def register():
+    return render_template('register.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

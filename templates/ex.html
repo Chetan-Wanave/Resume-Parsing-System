@@ -1,0 +1,98 @@
+<div class="container">
+    <a class="navbar-brand mr-4" href="">Flask Blog</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarToggle">
+    <div class="navbar-nav mr-auto">
+        <a class="nav-item nav-link" href="">Home</a>
+        <a class="nav-item nav-link" href="">About</a>
+    </div>
+
+    <!--{{ url_for('home') }}
+        {{ url_for('about') }}
+        {{ url_for('new_post') }}
+        {{ url_for('account') }}
+        {{ url_for('logout') }}
+        {{ url_for('login') }}
+        {{ url_for('register') }}
+    -->
+
+    <!-- Navbar Right Side -->
+    <div class="navbar-nav">
+        <!-- {% if current_user.is_authenticated: %} -->
+            <a class="nav-item nav-link" href="">New Post</a>
+            <a class="nav-item nav-link" href="">Account</a>
+            <a class="nav-item nav-link" href="">Logout</a>
+        <!-- {% else: %} -->
+            <a class="nav-item nav-link" href="">Login</a>
+            <a class="nav-item nav-link" href="">Register</a>
+        <!-- {% endif %} -->
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <center>
+    <img src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYugcd50H-J9k2aqtQ8GgebajaY3aMC7k7uw&usqp=CAU" width="50" height="50" >
+    <h1>Resume Analyzer</h1>
+    </center>
+    
+    <form action="/" method="post" enctype="multipart/form-data">
+        <label for="job_description">Job Description:</label>
+        <textarea name="job_description" rows="4" cols="50" required></textarea>
+        <br>
+        <label for="resume_files">Upload Resumes (PDF):</label>
+        <input type="file" name="resume_files" accept=".pdf" multiple required>
+        <br>
+        <input type="submit" value="Analyze Resumes">
+    </form>
+    <br>
+    {% if results %}
+    <h2>Ranked Resumes:</h2>
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Similarity in %</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ result[0][0] }}</td>
+            <td>{{ result[1][0] }}</td>
+            <td>{{ result[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% if results %}
+    <br>
+    <a href="{{ url_for('download_csv') }}" download="ranked_resumes.csv" class="download-link">
+        Download CSV
+    </a>
+    
+{% endif %}
+
+    {% endif %}
+</body>
+</html>
+
+------------------------------------------------------------------------------------------------------
